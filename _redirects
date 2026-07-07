@@ -1,0 +1,32 @@
+# Cloudflare Pages redirects — map legacy Webflow URLs and old dev paths to redesign canonicals
+# Format: <old> <new> <status>
+# Precedence: _redirects runs BEFORE functions/_middleware.js
+
+# --- Webflow SEO service URLs (post-DNS-flip, keep old page rank alive) ---
+/pool-cleaning-service-las-vegas                     /services/pool-cleaning     301
+/services/pool-cleaning-service-las-vegas            /services/pool-cleaning     301
+/services/pool-consulting-service-las-vegas          /services/pool-consulting   301
+/services/pool-maintenance-las-vegas                 /services/pool-maintenance  301
+/services/pool-repair-service-las-vegas              /services/pool-repair       301
+/services/weekly-pool-service-las-vegas              /services/pool-cleaning     301
+
+# --- Paperclip-hallucinated bare service slugs (fix broken internal links in older posts) ---
+/pool-consulting                                     /services/pool-consulting   301
+/weekly-pool-service                                 /services/pool-cleaning     301
+/pool-cleaning                                       /services/pool-cleaning     301
+/pool-maintenance                                    /services/pool-maintenance  301
+/pool-repair                                         /services/pool-repair       301
+
+# --- Webflow standard page slugs → redesign equivalents ---
+/about                                               /about-us                   301
+/contact                                             /contact-us                 301
+/las-vegas-areas-we-service                          /services/pool-cleaning     301
+
+# --- Webflow blog category listings (no direct redesign equivalent) → blog root ---
+/blog-category/*                                     /blog/                      301
+
+# --- Historic dev URL — blog.html moved into blog/ ---
+/blog.html                                           /blog/                      301
+
+# --- Legacy sitemap page → machine-readable sitemap ---
+/site-map                                            /sitemap.xml                301
