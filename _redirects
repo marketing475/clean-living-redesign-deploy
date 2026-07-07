@@ -30,3 +30,6 @@
 
 # --- Legacy sitemap page → machine-readable sitemap ---
 /site-map                                            /sitemap.xml                301
+
+# --- Legacy `/services.html` from Webflow (referenced by 78 imported blog articles) ---
+/services.html                                        /#section_our-services      301
