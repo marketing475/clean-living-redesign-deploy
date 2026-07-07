@@ -6,14 +6,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Length probe
-        env:
-          T: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          A: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          # print sha256 (won't match secret, so won't get masked)
-          echo "token sha256: $(printf '%s' "$T" | sha256sum | cut -c1-16)"
-          echo "account sha256: $(printf '%s' "$A" | sha256sum | cut -c1-16)"
-          # print length via a math expr to avoid direct output that might collide
-          echo "token bytes / 10: $(( $(printf '%s' "$T" | wc -c) / 10 ))"
-          echo "account bytes / 10: $(( $(printf '%s' "$A" | wc -c) / 10 ))"
+      - uses: actions/checkout@v4
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy . --project-name=clean-living-redesign --branch=main --commit-dirty=true
