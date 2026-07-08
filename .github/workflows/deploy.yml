@@ -7,9 +7,53 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect direct dist/ edits
+        id: dist_check
+        run: |
+          if git diff --name-only --diff-filter=AM HEAD~1 HEAD -- dist/ 2>/dev/null | grep -q '^dist/'; then
+            echo "direct_dist_edit=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Direct dist/ edit detected — will be overwritten by build.py"
+          else
+            echo "direct_dist_edit=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build site from source
+        run: python3 build.py
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=clean-living-redesign --branch=main --commit-dirty=true
+          command: pages deploy dist/ --project-name=clean-living-redesign --branch=main --commit-dirty=true
+
+      - name: Slack — direct dist/ edit warning
+        if: steps.dist_check.outputs.direct_dist_edit == 'true'
+        continue-on-error: true
+        run: |
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data @- <<EOF
+          {
+            "channel": "C07VBT4PA1H",
+            "text": ":warning: Direct dist/ edit detected — *${{ github.event.repository.name }}*\nSource-based build deployed instead of committed dist/.\nCommit: \`${{ github.sha }}\` — ${{ github.event.head_commit.message }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow>"
+          }
+          EOF
+
+      - name: Slack — deploy failed
+        if: failure()
+        continue-on-error: true
+        run: |
+          curl -s -X POST https://slack.com/api/chat.postMessage \
+            -H "Authorization: Bearer ${{ secrets.SLACK_BOT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data @- <<EOF
+          {
+            "channel": "C07VBT4PA1H",
+            "text": ":x: Deploy failed — *${{ github.event.repository.name }}*\nCommit: \`${{ github.sha }}\` — ${{ github.event.head_commit.message }}\n<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|View workflow>"
+          }
+          EOF

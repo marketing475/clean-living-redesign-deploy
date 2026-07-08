@@ -26,7 +26,10 @@
 /blog-category/*                                     /blog/                      301
 
 # --- Historic dev URL — blog.html moved into blog/ ---
-/blog.html                                           /blog/                      301
+/blog.html                                           /blog                       301
+
+# --- Article trailing-slash removal (Webflow used /article/<slug>/) ---
+/article/*/                                          /article/:splat             301
 
 # --- Legacy sitemap page → machine-readable sitemap ---
 /site-map                                            /sitemap.xml                301

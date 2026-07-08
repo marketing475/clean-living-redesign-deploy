@@ -1,0 +1,44 @@
+<main>
+  <section class="post-hero">
+    <div class="container">
+      <div class="crumbs">
+        <a href="/">Home</a> / <a href="/blog">Blog</a> / <span>{{TITLE}}</span>
+      </div>
+      {{CATEGORY_HTML}}
+      <h1>{{TITLE}}</h1>
+      <div class="post-meta">
+        <span>{{DATE_FORMATTED}}</span>
+        <span class="sep">&middot;</span>
+        <span>By {{AUTHOR}}</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="post-feature">
+    <div class="container">
+      <img src="{{FEATURED_IMAGE}}" alt="{{ALT_TEXT}}" loading="eager">
+    </div>
+  </div>
+
+  <article class="post-body">
+    <div class="container">
+      {{BODY}}
+    </div>
+  </article>
+
+  <section class="post-cta">
+    <div class="container">
+      <div class="cta-inner">
+        <div>
+          <div class="eyebrow">Need pool service?</div>
+          <h2>Call Clean Living Pool and Spa today.</h2>
+          <p>Weekly pool cleaning, repair, and maintenance across Las Vegas and Henderson.</p>
+        </div>
+        <div class="actions">
+          <a href="tel:7025393927" class="btn btn-primary">Call (702) 539-3927</a>
+          <a href="/blog" class="back-link">&larr; Back to all posts</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
