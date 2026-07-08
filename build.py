@@ -112,6 +112,24 @@ def apply_vars(html, variables):
     return html
 
 
+def balance_divs(fragment_html):
+    """Pad the fragment with extra opening <div>s if it has more </div> than <div>.
+
+    Some page fragments (e.g. contact-us, services pages) carry unbalanced
+    </div> closes that would pop out of the content-wrapper and leave the
+    footer as a body-level sibling. That drops the overflow:clip that
+    content-wrapper applies to the footer's 1500px background waves, so
+    non-home pages end up with ~500px of empty space below the footer.
+    Balance the fragment defensively so the footer is always nested inside
+    content-wrapper.
+    """
+    opens = len(re.findall(r"<div[\s>]", fragment_html))
+    closes = fragment_html.count("</div>")
+    if closes > opens:
+        return "<div>" * (closes - opens) + fragment_html
+    return fragment_html
+
+
 def assemble(page, head_tpl, nav_html, footer_html, fragment_html, site_defaults=None):
     canonical = page.get("canonical", "")
     default_og_image = f"{SITE_URL}/assets/images/clps-logo.webp"
@@ -133,7 +151,7 @@ def assemble(page, head_tpl, nav_html, footer_html, fragment_html, site_defaults
     variables = dict(site_defaults or {})
     variables.update(page.get("vars", {}))
     nav = apply_vars(nav_html, variables)
-    frag = apply_vars(fragment_html, variables)
+    frag = apply_vars(balance_divs(fragment_html), variables)
     foot = apply_vars(footer_html, variables)
     return head + nav + "\n" + frag + "\n" + foot
 
