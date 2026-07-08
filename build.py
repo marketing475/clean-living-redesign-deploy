@@ -59,7 +59,7 @@ BLOG_POST_HEAD_TEMPLATE = """<meta name="twitter:title" content="{{META_TITLE}}"
 </script>
 
 <style>
-  .post-hero { padding: clamp(56px, 9vh, 96px) 24px clamp(36px, 5vh, 56px); background: #0e7ac6; color: #fff; }
+  .post-hero { padding: clamp(130px, 16vh, 160px) 24px clamp(36px, 5vh, 56px); background: #0e7ac6; color: #fff; }
   .post-hero .container { max-width: 1200px; margin: 0 auto; }
   .post-hero .crumbs { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; opacity: .8; margin-bottom: 20px; }
   .post-hero .crumbs a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.4); }
