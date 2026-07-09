@@ -59,14 +59,14 @@ BLOG_POST_HEAD_TEMPLATE = """<meta name="twitter:title" content="{{META_TITLE}}"
 </script>
 
 <style>
-  .post-hero { padding: clamp(130px, 16vh, 160px) 24px clamp(36px, 5vh, 56px); background: #0e7ac6; color: #fff; }
+  .post-hero { padding: clamp(220px, 24vh, 260px) 24px clamp(36px, 5vh, 56px); background: #fff; color: #0d1b2a; }
   .post-hero .container { max-width: 1200px; margin: 0 auto; }
-  .post-hero .crumbs { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; opacity: .8; margin-bottom: 20px; }
-  .post-hero .crumbs a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.4); }
-  .post-hero .crumbs a:hover { border-bottom-color: #fff; }
-  .post-hero .cat { display: inline-block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; background: rgba(255,255,255,.2); padding: 4px 10px; border-radius: 4px; margin-bottom: 16px; }
-  .post-hero h1 { font-size: clamp(28px, 5vw, 52px); line-height: 1.15; margin: 0; }
-  .post-hero .post-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; font-size: 14px; opacity: .9; }
+  .post-hero .crumbs { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6b7a8f; margin-bottom: 20px; }
+  .post-hero .crumbs a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(13,27,42,.2); }
+  .post-hero .crumbs a:hover { border-bottom-color: #0e7ac6; color: #0e7ac6; }
+  .post-hero .cat { display: inline-block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; background: rgba(14,122,198,.1); color: #0e7ac6; padding: 4px 10px; border-radius: 4px; margin-bottom: 16px; }
+  .post-hero h1 { font-size: clamp(28px, 5vw, 52px); line-height: 1.15; margin: 0; color: #0d1b2a; }
+  .post-hero .post-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 20px; font-size: 14px; color: #6b7a8f; }
   .post-hero .post-meta .sep { opacity: .5; }
   .post-feature { background: #f7f7f7; padding: 32px 24px; }
   .post-feature .container { max-width: 1000px; margin: 0 auto; }
