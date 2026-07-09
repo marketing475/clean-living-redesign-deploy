@@ -59,6 +59,7 @@ BLOG_POST_HEAD_TEMPLATE = """<meta name="twitter:title" content="{{META_TITLE}}"
 </script>
 
 <style>
+  .header--scrolled .header__navbar { background-color: #fff !important; }
   .post-hero { padding: clamp(220px, 24vh, 260px) 24px clamp(36px, 5vh, 56px); background: #fff; color: #0d1b2a; }
   .post-hero .container { max-width: 1200px; margin: 0 auto; }
   .post-hero .crumbs { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #6b7a8f; margin-bottom: 20px; }
