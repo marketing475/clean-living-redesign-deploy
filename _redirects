@@ -36,3 +36,6 @@
 
 # --- Legacy `/services.html` from Webflow (referenced by 78 imported blog articles) ---
 /services.html                                        /#section_our-services      301
+/services/pool-maintenance-services /services/pool-maintenance 301
+/filter-cleaning /services/pool-maintenance 301
+/services /#section_our-services 301

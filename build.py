@@ -175,7 +175,10 @@ def main():
     blog = load_json("blog.json") or {}
     site = cfg["site"]
     global SITE_URL
-    SITE_URL = site["url"].rstrip("/")
+    # BRAND_URL is the client's real domain. SITE_URL is where the site is served from right now:
+    # site.liveUrl while the redesign lives on pages.dev, falling back to the brand domain once it moves.
+    BRAND_URL = site["url"].rstrip("/")
+    SITE_URL = (site.get("liveUrl") or site["url"]).rstrip("/")
 
     head_tpl = (PARTIALS / "head.html").read_text()
     nav_html = (PARTIALS / "nav.html").read_text()
@@ -362,12 +365,35 @@ def main():
         f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n"
     )
 
+    relink_domain(BRAND_URL, SITE_URL)
+
     print(f"Wrote {len(written)} pages to {DIST}:")
     for slug, size in written[:20]:
         print(f"  {slug:60s} {size:>9,} bytes")
     if len(written) > 20:
         print(f"  ... plus {len(written) - 20} more")
     print("  + sitemap.xml, robots.txt")
+
+
+def relink_domain(brand_url, site_url):
+    """Make clickable same-site links relative, and point every full address at site_url.
+
+    Links people click (<a href>) become root-relative so they work on whichever domain serves
+    the site. Canonical, Open Graph, JSON-LD, sitemap and robots.txt must stay absolute, so the
+    brand domain in those is swapped for site_url (a no-op once liveUrl is removed).
+    """
+    host = re.sub(r"^https?://(www\.)?", "", brand_url)
+    brand = re.compile(r"https?://(?:www\.)?" + re.escape(host))
+    a_href = re.compile(r'(<a\b[^>]*?\bhref=["\'])https?://(?:www\.)?' + re.escape(host) + r'(/[^"\']*)?(["\'])', re.I)
+    for f in DIST.rglob("*"):
+        if not f.is_file() or f.suffix not in (".html", ".xml", ".txt", ".json"):
+            continue
+        s = f.read_text(errors="ignore")
+        t = a_href.sub(lambda m: m.group(1) + (m.group(2) or "/") + m.group(3), s)
+        if site_url != brand_url:
+            t = brand.sub(site_url, t)
+        if t != s:
+            f.write_text(t)
 
 
 if __name__ == "__main__":
